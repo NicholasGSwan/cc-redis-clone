@@ -38,6 +38,6 @@ func main() {
 	str := string(data[:bread])
 	fmt.Println("Message from conn: ", str)
 
-	conn.Write([]byte("+PONG/r/n"))
+	conn.Write([]byte("+PONG\r\n"))
 
 }
