@@ -42,7 +42,11 @@ func main() {
 		for ind > -1 {
 			ind = bytes.IndexByte(data, sep)
 			fmt.Println("message from connection: ", string(data[:ind]))
+			cnt := 0
 			if ind > -1 {
+				cnt++
+				fmt.Println("sending response number: ", cnt)
+
 				conn.Write([]byte("+PONG\r\n"))
 				data = data[ind+1:]
 			}
