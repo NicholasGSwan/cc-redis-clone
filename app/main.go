@@ -22,7 +22,9 @@ func main() {
 		fmt.Println("Failed to bind to port 6379")
 		os.Exit(1)
 	}
-	go sendPong(l)
+	for {
+		go sendPong(l)
+	}
 
 }
 
