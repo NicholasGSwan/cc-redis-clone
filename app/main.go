@@ -1,14 +1,16 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"net"
 	"os"
 )
 
-// Ensures gofmt doesn't remove the "net" and "os" imports in stage 1 (feel free to remove this!)
-var _ = net.Listen
-var _ = os.Exit
+const (
+	readWidth = 1024
+	sep       = '\n'
+)
 
 func main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -28,16 +30,25 @@ func main() {
 		os.Exit(1)
 	}
 	defer conn.Close()
-	data := make([]byte, 8)
+	data := make([]byte, readWidth)
 	bread, err := conn.Read(data)
 
 	if err != nil {
 		fmt.Println("Error reading from connection: ", err.Error())
 		os.Exit(1)
 	}
-	str := string(data[:bread])
-	fmt.Println("Message from conn: ", str)
+	if bread > 0 {
+		ind := 0
+		for ind > -1 {
+			ind = bytes.IndexByte(data, sep)
 
-	conn.Write([]byte("+PONG\r\n"))
+			if ind > 0 {
+				conn.Write([]byte("+PONG\r\n"))
+			}
+
+			data = data[ind+1:]
+		}
+
+	}
 
 }
