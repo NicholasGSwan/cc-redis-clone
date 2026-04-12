@@ -41,8 +41,8 @@ func main() {
 		ind := 0
 		for ind > -1 {
 			ind = bytes.IndexByte(data, sep)
-			fmt.Println("message from connection: ", string(data[:ind]))
-			if string(data[:ind]) == "PING" {
+			//fmt.Println("message from connection: ", string(data[:ind]))
+			if ind > -1 {
 				conn.Write([]byte("+PONG\r\n"))
 			}
 
