@@ -39,10 +39,11 @@ func main() {
 	}
 	if bread > 0 {
 		ind := 0
+		cnt := 0
 		for ind > -1 {
 			ind = bytes.IndexByte(data, sep)
 			fmt.Println("message from connection: ", string(data[:ind]))
-			cnt := 0
+
 			if ind > -1 {
 				cnt++
 				fmt.Println("sending response number: ", cnt)
