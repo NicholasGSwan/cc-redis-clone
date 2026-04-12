@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"net"
 	"os"
@@ -39,28 +38,14 @@ func main() {
 			os.Exit(1)
 		}
 		if bread > 0 {
-			ind := 0
-			cnt := 0
-			for ind > -1 {
-				ind = bytes.IndexByte(data, sep)
 
-				//
-
-				if ind > -1 {
-					fmt.Println("message from connection: ", string(data[:ind]))
-
-					if string(data[:ind]) == "PING\r" {
-						cnt++
-						fmt.Println("sending response number: ", cnt)
-						conn.Write([]byte("+PONG\r\n"))
-					}
-
-					data = data[ind+1:]
-				}
-
-			}
+			go sendPong(conn)
 
 		}
 	}
 
+}
+
+func sendPong(conn net.Conn) {
+	conn.Write([]byte("+PONG\r\n"))
 }
