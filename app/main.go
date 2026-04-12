@@ -49,7 +49,7 @@ func main() {
 				fmt.Println("message from connection: ", string(data[:ind]))
 				cnt++
 				fmt.Println("sending response number: ", cnt)
-				if string(data[:ind]) == "PING" {
+				if string(data[:ind]) == "PING\r" {
 					conn.Write([]byte("+PONG\r\n"))
 				}
 
