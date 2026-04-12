@@ -43,9 +43,10 @@ func main() {
 		for ind > -1 {
 			ind = bytes.IndexByte(data, sep)
 
-			//fmt.Println("message from connection: ", string(data[:ind]))
+			//
 
 			if ind > -1 {
+				fmt.Println("message from connection: ", string(data[:ind]))
 				cnt++
 				fmt.Println("sending response number: ", cnt)
 				if string(data[:ind]) == "PING" {
