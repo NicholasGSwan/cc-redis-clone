@@ -9,7 +9,7 @@ import (
 
 const (
 	readWidth = 1024
-	sep       = "\r\n"
+	sep       = '\n'
 )
 
 func main() {
@@ -40,8 +40,8 @@ func main() {
 	if bread > 0 {
 		ind := 0
 		for ind > -1 {
-			ind = bytes.Index(data, []byte(sep))
-
+			ind = bytes.IndexByte(data, sep)
+			fmt.Println("message from connection: ", data[:ind])
 			if ind > 0 {
 				conn.Write([]byte("+PONG\r\n"))
 			}
