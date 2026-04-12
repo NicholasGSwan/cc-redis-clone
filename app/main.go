@@ -9,7 +9,7 @@ import (
 
 const (
 	readWidth = 1024
-	sep       = '\n'
+	sep       = "\r\n"
 )
 
 func main() {
@@ -40,7 +40,7 @@ func main() {
 	if bread > 0 {
 		ind := 0
 		for ind > -1 {
-			ind = bytes.IndexByte(data, sep)
+			ind = bytes.Index(data, []byte(sep))
 
 			if ind > 0 {
 				conn.Write([]byte("+PONG\r\n"))
