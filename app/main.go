@@ -22,6 +22,12 @@ func main() {
 		fmt.Println("Failed to bind to port 6379")
 		os.Exit(1)
 	}
+	go sendPong(l)
+
+}
+
+func sendPong(l net.Listener) {
+
 	conn, err := l.Accept()
 
 	if err != nil {
@@ -39,13 +45,9 @@ func main() {
 		}
 		if bread > 0 {
 
-			go sendPong(conn)
+			conn.Write([]byte("+PONG\r\n"))
 
 		}
 	}
 
-}
-
-func sendPong(conn net.Conn) {
-	conn.Write([]byte("+PONG\r\n"))
 }
