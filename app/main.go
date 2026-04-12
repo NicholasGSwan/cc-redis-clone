@@ -47,9 +47,10 @@ func main() {
 
 			if ind > -1 {
 				fmt.Println("message from connection: ", string(data[:ind]))
-				cnt++
-				fmt.Println("sending response number: ", cnt)
+
 				if string(data[:ind]) == "PING\r" {
+					cnt++
+					fmt.Println("sending response number: ", cnt)
 					conn.Write([]byte("+PONG\r\n"))
 				}
 
