@@ -24,9 +24,8 @@ func main() {
 		fmt.Println("Failed to bind to port 6379")
 		os.Exit(1)
 	}
-	for {
-		go sendResponse(l)
-	}
+
+	go sendResponse(l)
 
 }
 
