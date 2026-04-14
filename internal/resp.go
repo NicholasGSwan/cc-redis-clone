@@ -11,7 +11,8 @@ var sep = []byte{'\r', '\n'}
 
 const ECHO = "echo"
 
-func Parse(data []byte) []string {
+func Parse(datap *[]byte) []string {
+	data := *datap
 	fmt.Println("begin parsing")
 	parsed := make([]string, 0)
 	switch data[0] {
@@ -30,7 +31,7 @@ func Parse(data []byte) []string {
 
 	}
 
-	parsed = append(parsed, Parse(data)...)
+	parsed = append(parsed, Parse(&data)...)
 	return parsed
 }
 
