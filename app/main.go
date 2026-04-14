@@ -45,25 +45,30 @@ func main() {
 func sendResponse(conn net.Conn) {
 	defer conn.Close()
 
-	data := make([]byte, readWidth)
-	bread, _ := conn.Read(data)
-	fmt.Println("data: ", string(data))
-	data = data[:bread]
-
-	arr := resp.Parse(&data)
-	fmt.Println("the number of values in returned arr: ", len(arr))
-	for _, v := range arr {
-		if v == "PING" {
-			sendPong(conn)
-		} else {
-
-			conn.Write([]byte{'$'})
-			conn.Write([]byte(strconv.Itoa(len(v))))
-			conn.Write(rn)
-			conn.Write([]byte(v))
-			conn.Write(rn)
+	for {
+		data := make([]byte, readWidth)
+		bread, _ := conn.Read(data)
+		if bread == 0 {
+			break
 		}
+		fmt.Println("data: ", string(data))
+		data = data[:bread]
 
+		arr := resp.Parse(&data)
+		fmt.Println("the number of values in returned arr: ", len(arr))
+		for _, v := range arr {
+			if v == "PING" {
+				sendPong(conn)
+			} else {
+
+				conn.Write([]byte{'$'})
+				conn.Write([]byte(strconv.Itoa(len(v))))
+				conn.Write(rn)
+				conn.Write([]byte(v))
+				conn.Write(rn)
+			}
+
+		}
 	}
 
 }
