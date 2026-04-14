@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 	"os"
+
+	resp "github.com/codecrafters-io/redis-starter-go/internal"
 )
 
 const (
@@ -23,13 +25,12 @@ func main() {
 		os.Exit(1)
 	}
 	for {
-		go sendPong(l)
+		go sendResponse(l)
 	}
 
 }
 
-func sendPong(l net.Listener) {
-
+func sendResponse(l net.Listener) {
 	conn, err := l.Accept()
 
 	if err != nil {
@@ -38,18 +39,18 @@ func sendPong(l net.Listener) {
 	}
 	defer conn.Close()
 	data := make([]byte, readWidth)
-	for {
-		bread, err := conn.Read(data)
-
-		if err != nil {
-			fmt.Println("Error reading from connection: ", err.Error())
-			os.Exit(1)
+	bread, err := conn.Read(data)
+	arr := resp.Parse(data[:bread])
+	for _, v := range arr {
+		if v == "PING" {
+			sendPong(conn)
+		} else {
+			conn.Write([]byte(v))
 		}
-		if bread > 0 {
 
-			conn.Write([]byte("+PONG\r\n"))
-
-		}
 	}
+}
 
+func sendPong(conn net.Conn) {
+	conn.Write([]byte("+PONG\r\n"))
 }

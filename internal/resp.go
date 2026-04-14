@@ -1,0 +1,59 @@
+package resp
+
+import (
+	"bytes"
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+var sep = []byte{'\r', '\n'}
+
+const ECHO = "echo"
+
+func Parse(data []byte) []string {
+	parsed := make([]string, 0)
+	switch data[0] {
+	case '*':
+		ind := bytes.Index(data, sep)
+		if ind == -1 {
+			fmt.Println("Improper message format, no endline characters found")
+		} else {
+			//l := getInt(data[1:ind])
+			data = data[ind+2:]
+
+		}
+	case '$':
+
+		parsed = append(parsed, parseNextString(data))
+
+	}
+
+	parsed = append(parsed, Parse(data)...)
+	return parsed
+}
+
+func getInt(data []byte) int {
+	val, err := strconv.Atoi(string(data))
+	if err != nil {
+		fmt.Printf("Could not convert int to string: %v", err)
+		return 0
+	}
+	return val
+}
+
+func parseNextString(data []byte) string {
+	ind := bytes.Index(data, sep)
+	if ind == -1 {
+		fmt.Println("Improper message format, no endline characters found")
+	}
+	l := getInt(data[1:ind])
+	s := string(data[ind+2 : ind+2+l])
+	ind = ind + 4 + l
+	data = data[ind:]
+	if strings.ToLower(s) == ECHO {
+		s = parseNextString(data)
+	}
+	return s
+
+}
