@@ -26,7 +26,7 @@ func Parse(data []byte) []string {
 		}
 	case '$':
 
-		parsed = append(parsed, parseNextString(data))
+		parsed = append(parsed, parseNextString(&data))
 
 	}
 
@@ -43,8 +43,10 @@ func getInt(data []byte) int {
 	return val
 }
 
-func parseNextString(data []byte) string {
+func parseNextString(datap *[]byte) string {
+	data := *datap
 	ind := bytes.Index(data, sep)
+
 	if ind == -1 {
 		fmt.Println("Improper message format, no endline characters found")
 	}
@@ -54,7 +56,7 @@ func parseNextString(data []byte) string {
 	data = data[ind:]
 	fmt.Println("current string: ", s)
 	if strings.ToLower(s) == ECHO {
-		s = parseNextString(data)
+		s = parseNextString(&data)
 	}
 	return buildRespString(s)
 
