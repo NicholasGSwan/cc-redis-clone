@@ -56,8 +56,9 @@ func parseNextString(datap *[]byte) string {
 	ind = ind + 4 + l
 	data = data[ind:]
 	fmt.Println("current string: ", s)
+	*datap = data
 	if strings.ToLower(s) == ECHO {
-		s = parseNextString(&data)
+		s = parseNextString(datap)
 	}
 	return s
 
