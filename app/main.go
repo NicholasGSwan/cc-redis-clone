@@ -52,6 +52,7 @@ func sendResponse(l net.Listener) {
 		if v == "PING" {
 			sendPong(conn)
 		} else {
+			conn.Write('u+0024')
 			conn.Write([]byte(strconv.Itoa(len(v))))
 			conn.Write(rn)
 			conn.Write([]byte(v))
