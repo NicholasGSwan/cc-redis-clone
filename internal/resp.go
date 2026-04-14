@@ -12,6 +12,7 @@ var sep = []byte{'\r', '\n'}
 const ECHO = "echo"
 
 func Parse(data []byte) []string {
+	fmt.Println("begin parsing")
 	parsed := make([]string, 0)
 	switch data[0] {
 	case '*':
@@ -51,6 +52,7 @@ func parseNextString(data []byte) string {
 	s := string(data[ind+2 : ind+2+l])
 	ind = ind + 4 + l
 	data = data[ind:]
+	fmt.Println("current string: ", s)
 	if strings.ToLower(s) == ECHO {
 		s = parseNextString(data)
 	}
