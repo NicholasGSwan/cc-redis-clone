@@ -24,7 +24,7 @@ func Parse(datap *[]byte) []string {
 		} else {
 			//l := getInt(data[1:ind])
 			data = data[ind+2:]
-
+			parsed = append(parsed, Parse(&data)...)
 		}
 	case '$':
 
@@ -32,7 +32,6 @@ func Parse(datap *[]byte) []string {
 
 	}
 
-	parsed = append(parsed, Parse(&data)...)
 	return parsed
 }
 
