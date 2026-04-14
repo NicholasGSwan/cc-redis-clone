@@ -40,8 +40,9 @@ func sendResponse(l net.Listener) {
 		os.Exit(1)
 	}
 	defer conn.Close()
-	data := make([]byte, readWidth)
+
 	for {
+		data := make([]byte, readWidth)
 		bread, _ := conn.Read(data)
 		if bread == 0 {
 			break
