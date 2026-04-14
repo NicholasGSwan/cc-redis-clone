@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 
 	resp "github.com/codecrafters-io/redis-starter-go/internal"
 )
@@ -12,6 +13,8 @@ const (
 	readWidth = 1024
 	sep       = '\n'
 )
+
+var rn = []byte{'\r', '\n'}
 
 func main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -49,7 +52,10 @@ func sendResponse(l net.Listener) {
 		if v == "PING" {
 			sendPong(conn)
 		} else {
+			conn.Write([]byte(strconv.Itoa(len(v))))
+			conn.Write(rn)
 			conn.Write([]byte(v))
+			conn.Write(rn)
 		}
 
 	}

@@ -59,7 +59,7 @@ func parseNextString(datap *[]byte) string {
 	if strings.ToLower(s) == ECHO {
 		s = parseNextString(&data)
 	}
-	return buildRespString(s)
+	return s
 
 }
 
