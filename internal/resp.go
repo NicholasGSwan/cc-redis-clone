@@ -54,6 +54,10 @@ func parseNextString(data []byte) string {
 	if strings.ToLower(s) == ECHO {
 		s = parseNextString(data)
 	}
-	return s
+	return buildRespString(s)
 
+}
+
+func buildRespString(s string) string {
+	return fmt.Sprintf("$%d\r\n%s\r\n", len(s), s)
 }
