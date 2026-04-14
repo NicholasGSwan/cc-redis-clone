@@ -38,7 +38,9 @@ func sendResponse(l net.Listener) {
 	}
 	defer conn.Close()
 	data := make([]byte, readWidth)
+
 	bread, err := conn.Read(data)
+	fmt.Println("data: ", string(data))
 	arr := resp.Parse(data[:bread])
 	fmt.Println("the number of values in returned arr: ", len(arr))
 	for _, v := range arr {
