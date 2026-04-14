@@ -34,6 +34,9 @@ func main() {
 			fmt.Println("Could not accept new connection")
 			os.Exit(1)
 		}
+		if conn == nil {
+			break
+		}
 		go sendResponse(conn)
 	}
 
