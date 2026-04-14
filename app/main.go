@@ -41,6 +41,7 @@ func sendResponse(l net.Listener) {
 	data := make([]byte, readWidth)
 	bread, err := conn.Read(data)
 	arr := resp.Parse(data[:bread])
+	fmt.Println("the number of values in returned arr: ", len(arr))
 	for _, v := range arr {
 		if v == "PING" {
 			sendPong(conn)
