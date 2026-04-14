@@ -14,6 +14,7 @@ const ECHO = "echo"
 func Parse(datap *[]byte) []string {
 	data := *datap
 	fmt.Println("begin parsing")
+	fmt.Println("len of data: ", len(data))
 	parsed := make([]string, 0)
 	switch data[0] {
 	case '*':
