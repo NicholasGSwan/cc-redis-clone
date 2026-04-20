@@ -59,7 +59,7 @@ func sendResponse(conn net.Conn) {
 			if v == "PING" {
 				sendPong(conn)
 			} else {
-				if v[0] == '&' {
+				if v[0] == '$' {
 					conn.Write(interpretFingRespStringBecauseCodeCraftersDoesntlikemestoringtheliteralforsomereason(v))
 				} else {
 					conn.Write([]byte(v))
