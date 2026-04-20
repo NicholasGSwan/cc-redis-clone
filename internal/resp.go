@@ -65,7 +65,7 @@ func parseNextString(datap *[]byte) string {
 	switch strings.ToLower(s) {
 	case ECHO:
 		s = parseNextString(&data)
-		s = buildRespString(s)
+
 	case "set":
 		s = parseSetCommand(&data)
 	case "get":
