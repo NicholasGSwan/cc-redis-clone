@@ -65,9 +65,11 @@ func sendResponse(conn net.Conn) {
 				fmt.Println("the number of values in returned valArr: ", len(valArr))
 
 				for _, val := range valArr {
-					fmt.Println("curr val: ", val)
-					conn.Write([]byte(val))
-					conn.Write(rn)
+					if val != "" {
+						conn.Write([]byte(val))
+						conn.Write(rn)
+					}
+
 				}
 
 			}
