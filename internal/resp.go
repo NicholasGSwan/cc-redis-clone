@@ -9,7 +9,13 @@ import (
 
 var sep = []byte{'\r', '\n'}
 
+var cache map[string]string
+
 const ECHO = "echo"
+
+func init() {
+	cache = make(map[string]string)
+}
 
 func Parse(datap *[]byte) []string {
 	data := *datap
@@ -29,7 +35,14 @@ func Parse(datap *[]byte) []string {
 	case '$':
 
 		parsed = append(parsed, parseNextString(&data))
-
+	case 'S':
+		if string(data[0:3]) == "SET" {
+			parsed = append(parsed, parseSetCommand(&data))
+		}
+	case 'G':
+		if string(data[0:3]) == "GET" {
+			parsed = append(parsed, parseGetCommand(&data))
+		}
 	}
 
 	return parsed
@@ -64,6 +77,33 @@ func parseNextString(datap *[]byte) string {
 
 }
 
-func buildRespString(s string) string {
-	return fmt.Sprintf("$%d\r\n%s\r\n", len(s), s)
+func parseSetCommand(datap *[]byte) string {
+	data := *datap
+	ind := bytes.Index(data, sep)
+
+	if ind == -1 {
+		fmt.Println("Improper message format, no endline characters found")
+	}
+	sArr := strings.Split(string(data[:ind]), " ")
+
+	cache[sArr[1]] = sArr[2]
+	data = data[ind+2:]
+
+	return "OK"
+}
+
+func parseGetCommand(datap *[]byte) string {
+	data := *datap
+	ind := bytes.Index(data, sep)
+
+	if ind == -1 {
+		fmt.Println("Improper message format, no endline characters found")
+	}
+	sArr := strings.Split(string(data[:ind]), " ")
+
+	data = data[ind+2:]
+	if v, ok := cache[sArr[1]]; ok {
+		return v
+	}
+	return "-1"
 }

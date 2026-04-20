@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strconv"
 
 	resp "github.com/codecrafters-io/redis-starter-go/internal"
 )
@@ -61,11 +60,8 @@ func sendResponse(conn net.Conn) {
 				sendPong(conn)
 			} else {
 
-				conn.Write([]byte{'$'})
-				conn.Write([]byte(strconv.Itoa(len(v))))
-				conn.Write(rn)
-				conn.Write([]byte(v))
-				conn.Write(rn)
+				conn.Write([]byte(buildRespString(v)))
+
 			}
 
 		}
@@ -75,4 +71,11 @@ func sendResponse(conn net.Conn) {
 
 func sendPong(conn net.Conn) {
 	conn.Write([]byte("+PONG\r\n"))
+}
+
+func buildRespString(s string) string {
+	if s == "-1" {
+		return "$-1\r\n"
+	}
+	return fmt.Sprintf("$%d\r\n%s\r\n", len(s), s)
 }
