@@ -70,8 +70,8 @@ func parseNextString(datap *[]byte) string {
 		s = parseSetCommand(&data)
 	case "get":
 		s = parseGetCommand(&data)
-		// default:
-		// 	s = buildRespString(s)
+	default:
+		s = buildRespString(s)
 	}
 
 	return s
