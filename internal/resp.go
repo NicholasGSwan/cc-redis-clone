@@ -82,7 +82,8 @@ func parseSetCommand(datap *[]byte) string {
 
 	key := parseNextString(datap)
 	val := parseNextString(datap)
-
+	fmt.Println("the key is: ", key)
+	fmt.Println("the val is: ", val)
 	cache[key] = val
 	return "+OK\r\n"
 }
