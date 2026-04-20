@@ -11,7 +11,12 @@ var sep = []byte{'\r', '\n'}
 
 var cache map[string]string
 
-const ECHO = "echo"
+const (
+	ECHO = "echo"
+	PING = "ping"
+	GET  = "get"
+	SET  = "set"
+)
 
 func init() {
 	cache = make(map[string]string)
@@ -67,11 +72,11 @@ func parseNextString(datap *[]byte) string {
 	case ECHO:
 		s = parseNextString(&data)
 
-	case "set":
+	case SET:
 		s = parseSetCommand(&data)
-	case "get":
+	case GET:
 		s = parseGetCommand(&data)
-	case "ping":
+	case PING:
 		s = "+PONG"
 	default:
 		s = buildRespString(s)
