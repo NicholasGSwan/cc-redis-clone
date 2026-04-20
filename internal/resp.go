@@ -22,7 +22,7 @@ func Parse(datap *[]byte) []string {
 	fmt.Println("begin parsing")
 	fmt.Println("len of data: ", len(data))
 	parsed := make([]string, 0)
-	fmt.Printf("The first byte is: %c", data[0])
+	fmt.Printf("The first byte is: %c\n", data[0])
 	switch data[0] {
 	case '*':
 		ind := bytes.Index(data, sep)
@@ -71,6 +71,8 @@ func parseNextString(datap *[]byte) string {
 		s = parseSetCommand(&data)
 	case "get":
 		s = parseGetCommand(&data)
+	case "ping":
+		s = "+PONG"
 	default:
 		s = buildRespString(s)
 	}
