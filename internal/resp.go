@@ -35,14 +35,6 @@ func Parse(datap *[]byte) []string {
 	case '$':
 
 		parsed = append(parsed, parseNextString(&data))
-	case 'S':
-		if string(data[0:3]) == "SET" {
-			parsed = append(parsed, parseSetCommand(&data))
-		}
-	case 'G':
-		if string(data[0:3]) == "GET" {
-			parsed = append(parsed, parseGetCommand(&data))
-		}
 	}
 
 	return parsed
