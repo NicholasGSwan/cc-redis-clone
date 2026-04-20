@@ -59,11 +59,7 @@ func sendResponse(conn net.Conn) {
 			if v == "PING" {
 				sendPong(conn)
 			} else {
-				if v[0] == '$' {
-					conn.Write(interpretFingRespStringBecauseCodeCraftersDoesntlikemestoringtheliteralforsomereason(v))
-				} else {
-					conn.Write([]byte(v))
-				}
+				conn.Write([]byte(v))
 
 			}
 
@@ -72,23 +68,23 @@ func sendResponse(conn net.Conn) {
 
 }
 
-func interpretFingRespStringBecauseCodeCraftersDoesntlikemestoringtheliteralforsomereason(s string) []byte {
-	barr := make([]byte, 0)
-	for i := 0; i < len(s); i++ {
-		if s[i] == '\\' {
-			i++
-			switch s[i] {
-			case 'r':
-				barr = append(barr, '\r')
-			case 'n':
-				barr = append(barr, '\n')
-			}
-		} else {
-			barr = append(barr, s[i])
-		}
-	}
-	return barr
-}
+// func interpretFingRespStringBecauseCodeCraftersDoesntlikemestoringtheliteralforsomereason(s string) []byte {
+// 	barr := make([]byte, 0)
+// 	for i := 0; i < len(s); i++ {
+// 		if s[i] == '\\' {
+// 			i++
+// 			switch s[i] {
+// 			case 'r':
+// 				barr = append(barr, '\r')
+// 			case 'n':
+// 				barr = append(barr, '\n')
+// 			}
+// 		} else {
+// 			barr = append(barr, s[i])
+// 		}
+// 	}
+// 	return barr
+// }
 
 func sendPong(conn net.Conn) {
 	conn.Write([]byte("+PONG\r\n"))
