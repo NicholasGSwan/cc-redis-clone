@@ -91,7 +91,7 @@ func parseSetCommand(datap *[]byte) string {
 func parseGetCommand(datap *[]byte) string {
 	key := parseNextString(datap)
 	if v, ok := cache[key]; ok {
-		return buildRespString(v)
+		return v
 
 	}
 	return "$-1\r\n"
