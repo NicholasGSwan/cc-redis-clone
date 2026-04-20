@@ -73,7 +73,7 @@ func parseNextString(datap *[]byte) string {
 	if strings.ToLower(s) == ECHO {
 		s = parseNextString(&data)
 	}
-	return s
+	return buildRespString(s)
 
 }
 
@@ -89,7 +89,7 @@ func parseSetCommand(datap *[]byte) string {
 	cache[sArr[1]] = sArr[2]
 	data = data[ind+2:]
 
-	return "OK"
+	return "+OK\r\n"
 }
 
 func parseGetCommand(datap *[]byte) string {
@@ -103,7 +103,14 @@ func parseGetCommand(datap *[]byte) string {
 
 	data = data[ind+2:]
 	if v, ok := cache[sArr[1]]; ok {
-		return v
+		return buildRespString(v)
 	}
 	return "-1"
+}
+
+func buildRespString(s string) string {
+	if s == "-1" {
+		return "$-1\r\n"
+	}
+	return fmt.Sprintf("$%d\r\n%s\r\n", len(s), s)
 }
