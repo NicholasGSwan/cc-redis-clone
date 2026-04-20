@@ -98,5 +98,5 @@ func parseGetCommand(datap *[]byte) string {
 
 func buildRespString(s string) string {
 
-	return "$" + strconv.Itoa(len(s)) + "\r\n" + s + "\r\n"
+	return fmt.Sprintf("$%d\r\n%s\r\n", len(s), s)
 }
