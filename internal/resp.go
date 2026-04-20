@@ -61,7 +61,7 @@ func parseNextString(datap *[]byte) string {
 	ind = ind + 4 + l
 	data = data[ind:]
 	fmt.Println("current string: ", s)
-	//*datap = data
+	*datap = data
 	switch strings.ToLower(s) {
 	case ECHO:
 		s = parseNextString(&data)
