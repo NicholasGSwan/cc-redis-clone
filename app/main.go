@@ -51,17 +51,19 @@ func sendResponse(conn net.Conn) {
 		if bread == 0 {
 			break
 		}
-		fmt.Println("data: ", string(data))
+
 		data = data[:bread]
 
 		arr := resp.Parse(&data)
-		fmt.Println("the number of values in returned arr: ", len(arr))
+
 		for _, v := range arr {
 			if v == "PING" {
 				sendPong(conn)
 			} else {
 
 				valArr := strings.Split(v, "\r\n")
+				fmt.Println("the number of values in returned valArr: ", len(valArr))
+
 				for _, val := range valArr {
 					conn.Write([]byte(val))
 					conn.Write(rn)
