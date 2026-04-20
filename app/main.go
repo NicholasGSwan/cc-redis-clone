@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 
 	resp "github.com/codecrafters-io/redis-starter-go/internal"
 )
@@ -59,7 +60,12 @@ func sendResponse(conn net.Conn) {
 			if v == "PING" {
 				sendPong(conn)
 			} else {
-				conn.Write([]byte(v))
+
+				valArr := strings.Split(v, "\r\n")
+				for _, val := range valArr {
+					conn.Write([]byte(val))
+					conn.Write(rn)
+				}
 
 			}
 
@@ -67,24 +73,6 @@ func sendResponse(conn net.Conn) {
 	}
 
 }
-
-// func interpretFingRespStringBecauseCodeCraftersDoesntlikemestoringtheliteralforsomereason(s string) []byte {
-// 	barr := make([]byte, 0)
-// 	for i := 0; i < len(s); i++ {
-// 		if s[i] == '\\' {
-// 			i++
-// 			switch s[i] {
-// 			case 'r':
-// 				barr = append(barr, '\r')
-// 			case 'n':
-// 				barr = append(barr, '\n')
-// 			}
-// 		} else {
-// 			barr = append(barr, s[i])
-// 		}
-// 	}
-// 	return barr
-// }
 
 func sendPong(conn net.Conn) {
 	conn.Write([]byte("+PONG\r\n"))
