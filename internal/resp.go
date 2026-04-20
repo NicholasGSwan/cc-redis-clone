@@ -70,47 +70,40 @@ func parseNextString(datap *[]byte) string {
 	data = data[ind:]
 	fmt.Println("current string: ", s)
 	//*datap = data
-	if strings.ToLower(s) == ECHO {
+	switch strings.ToLower(s) {
+	case ECHO:
 		s = parseNextString(&data)
+		s = buildRespString(s)
+	case "set":
+		s = parseSetCommand(&data)
+	case "get":
+		s = parseGetCommand(&data)
+	default:
+		s = buildRespString(s)
 	}
-	return buildRespString(s)
+
+	return s
 
 }
 
 func parseSetCommand(datap *[]byte) string {
-	data := *datap
-	ind := bytes.Index(data, sep)
 
-	if ind == -1 {
-		fmt.Println("Improper message format, no endline characters found")
-	}
-	sArr := strings.Split(string(data[:ind]), " ")
+	key := parseNextString(datap)
+	val := parseNextString(datap)
 
-	cache[sArr[1]] = sArr[2]
-	data = data[ind+2:]
-
+	cache[key] = val
 	return "+OK\r\n"
 }
 
 func parseGetCommand(datap *[]byte) string {
-	data := *datap
-	ind := bytes.Index(data, sep)
-
-	if ind == -1 {
-		fmt.Println("Improper message format, no endline characters found")
-	}
-	sArr := strings.Split(string(data[:ind]), " ")
-
-	data = data[ind+2:]
-	if v, ok := cache[sArr[1]]; ok {
+	key := parseNextString(datap)
+	if v, ok := cache[key]; ok {
 		return buildRespString(v)
 	}
-	return "-1"
+	return "$-1\r\n"
 }
 
 func buildRespString(s string) string {
-	if s == "-1" {
-		return "$-1\r\n"
-	}
+
 	return fmt.Sprintf("$%d\r\n%s\r\n", len(s), s)
 }
