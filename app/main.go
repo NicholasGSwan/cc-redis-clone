@@ -60,7 +60,7 @@ func sendResponse(conn net.Conn) {
 				sendPong(conn)
 			} else {
 
-				conn.Write([]byte(buildRespString(v)))
+				conn.Write([]byte(v))
 
 			}
 
@@ -71,11 +71,4 @@ func sendResponse(conn net.Conn) {
 
 func sendPong(conn net.Conn) {
 	conn.Write([]byte("+PONG\r\n"))
-}
-
-func buildRespString(s string) string {
-	if s == "-1" {
-		return "$-1\r\n"
-	}
-	return fmt.Sprintf("$%d\r\n%s\r\n", len(s), s)
 }
